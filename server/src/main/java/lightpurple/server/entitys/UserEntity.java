@@ -1,4 +1,4 @@
-package lightpurple.server.models;
+package lightpurple.server.entitys;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table
 @EntityListeners(AuditingEntityListener.class)
-public class Users {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
