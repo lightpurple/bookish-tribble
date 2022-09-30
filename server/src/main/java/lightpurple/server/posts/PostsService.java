@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -12,10 +13,19 @@ import java.util.List;
 public class PostsService {
     private final PostsRepository postsRepository;
 
-//    public List<PostEntity> getPosts() {
-//        List<PostEntity> allPosts = postsRepository.findAll();
-//        return allPosts;
-//    }
+    public List<PostsDTO> getPosts() {
+        List<PostEntity> allPosts = postsRepository.findAll();
+        List<PostsDTO> ret = new ArrayList<>();
+
+        for (PostEntity post : allPosts) {
+            PostsDTO tmp = new PostsDTO();
+
+            tmp.setTitle(post.getTitle());
+            tmp.setContent(post.getContent());
+            ret.add(tmp);
+        }
+        return ret;
+    }
 
     @Transactional
     public void createPost(PostsDTO postsDTO) {

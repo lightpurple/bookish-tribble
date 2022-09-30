@@ -15,14 +15,12 @@ public class UsersController {
     private final UsersService usersService;
 
     @GetMapping()
-    @ResponseBody
     public ResponseEntity getUsers() {
         List<UsersDTO> users = usersService.getUsers();
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
     @PostMapping()
-    @ResponseBody
     public ResponseEntity create(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
         UsersDTO usersDTO = new UsersDTO();
         usersDTO.setName(name);
