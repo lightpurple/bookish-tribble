@@ -1,37 +1,36 @@
 package lightpurple.server.users;
 
 import lightpurple.server.entitys.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
 public class UsersController {
-    @Autowired
-    private UsersRepository UsersRepository;
+    private final UsersService usersService;
 
-    @GetMapping("/users")
+    @GetMapping()
     @ResponseBody
-    public List<UserEntity> getUsers() {
-        List<UserEntity> users = this.UsersRepository.findAll();
-
-        return users;
+    public ResponseEntity getUsers() {
+        List<UsersDTO> users = usersService.getUsers();
+        return new ResponseEntity(users, HttpStatus.OK);
     }
 
-    @PostMapping("/users")
+    @PostMapping()
     @ResponseBody
-    public UserEntity create(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
-        UserEntity newUser = new UserEntity();
-        newUser.setName(name);
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        this.UsersRepository.save(newUser);
-        return newUser;
-    }
+    public ResponseEntity create(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
+        UsersDTO usersDTO = new UsersDTO();
+        usersDTO.setName(name);
+        usersDTO.setEmail(email);
+        usersDTO.setPassword(password);
 
+        usersService.create(usersDTO);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 }
+
